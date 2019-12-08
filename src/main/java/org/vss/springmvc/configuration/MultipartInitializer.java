@@ -5,17 +5,16 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration;
 
-public class MultipartInitializer extends
-        AbstractAnnotationConfigDispatcherServletInitializer {
+public class MultipartInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{MultipartConfiguration.class};
+        return new Class[]{MultipartWebConfig.class};
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return null;
+        return new Class[] { MultipartWebConfig.class };
     }
 
     @Override
@@ -33,7 +32,7 @@ public class MultipartInitializer extends
         return multipartConfigElement;
     }
 
-    private static final String LOCATION = "C:/temp/"; // Temporary location where files will be stored
+    private static final String LOCATION = "C:/dev/"; // Temporary location where files will be stored
 
     private static final long MAX_FILE_SIZE = 5242880; // 5MB : Max file size.
     // Beyond that size spring will throw exception.
