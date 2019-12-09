@@ -1,10 +1,5 @@
 package org.vss.springmvc.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,9 +10,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.vss.springmvc.model.User;
-import org.vss.springmvc.repositories.UserRepository;
 import org.vss.springmvc.services.UserParserFromFile;
 import org.vss.springmvc.services.UserService;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.vss.springmvc.services.UserParserFromFile.UPLOAD_LOCATION;
 

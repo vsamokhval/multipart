@@ -1,5 +1,16 @@
 package org.vss.springmvc.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.vss.springmvc.model.Phone;
+import org.vss.springmvc.model.User;
+import org.vss.springmvc.repositories.PhoneRepository;
+import org.vss.springmvc.repositories.UserRepository;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -7,23 +18,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.vss.springmvc.model.Phone;
-import org.vss.springmvc.model.User;
-import org.vss.springmvc.repositories.PhoneRepository;
-import org.vss.springmvc.repositories.UserRepository;
-
 @Service
+@Transactional
 public class UserParserFromFile {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserParserFromFile.class);
 
     public static String UPLOAD_LOCATION = "C:/dev/";
 
     @Autowired
-    private UserRepository userRepository;
+    @Qualifier("phoneRepository")
+    private PhoneRepository phoneRepository;
 
     @Autowired
-    private PhoneRepository phoneRepository;
+    @Qualifier("userRepository")
+    private UserRepository userRepository;
 
     public List<User> parseFiles(List<String> fileNames) {
         String cvsSplitBy = ",";
@@ -42,17 +51,18 @@ public class UserParserFromFile {
                         Phone phone = new Phone();
                         phone.setNumber(userToParse[i]);
                         phone.setCompanyName(userToParse[i + 1]);
+                        phone.setUser(user);
                         user.getPhoneNumbers().add(phone);
                     }
 
+                    User save = userRepository.save(user);
                     phoneRepository.saveAll(user.getPhoneNumbers());
-                    users.add(user);
+                    users.add(save);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("Error: ", e);
             }
         }
-        userRepository.saveAll(users);
 
         return users;
     }
