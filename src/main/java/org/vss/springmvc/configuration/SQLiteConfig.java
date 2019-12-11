@@ -12,6 +12,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -26,14 +28,19 @@ class SQLiteConfig {
     @Autowired
     private Environment env;
 
+//    @Bean
+//    public DataSource dataSource() {
+//        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//        dataSource.setDriverClassName(env.getProperty("driverClassName"));
+//        dataSource.setUrl(env.getProperty("url"));
+//        dataSource.setUsername(env.getProperty("username"));
+//        dataSource.setPassword(env.getProperty("password"));
+//        return dataSource;
+//    }
+
     @Bean
-    public DataSource dataSource() {
-        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty("driverClassName"));
-        dataSource.setUrl(env.getProperty("url"));
-        dataSource.setUsername(env.getProperty("username"));
-        dataSource.setPassword(env.getProperty("password"));
-        return dataSource;
+    public DataSource dataSource(){
+        return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build();
     }
 
     @Bean

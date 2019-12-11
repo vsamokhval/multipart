@@ -11,17 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.vss.springmvc.model.User;
 import org.vss.springmvc.repositories.UserRepository;
-import org.vss.springmvc.services.UserService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @Controller
 public class UsersController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private UserRepository userRepository;
@@ -33,8 +31,12 @@ public class UsersController {
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String getUsers(@ModelAttribute("model") ModelMap model) {
-        Iterable<User> users = userRepository.findAll();
+        Iterable<User> retrievedUsers = userRepository.findAll();
+        List<User> users = new ArrayList<>();
+        retrievedUsers.forEach(users::add);
+
         logger.info("users: {}", users);
+
         model.addAttribute("usersList", users);
         return "index";
     }

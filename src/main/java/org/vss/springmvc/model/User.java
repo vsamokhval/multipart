@@ -20,6 +20,6 @@ public class User {
     private Integer Id;
     private String name;
     private String surname;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Phone> phoneNumbers = new ArrayList<>();
 }

@@ -18,7 +18,12 @@ public class Phone {
     private Integer Id;
     private String number;
     private String companyName;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable=false)
     private User user;
+
+    @Override
+    public String toString() {
+        return "Phone:[number=" + number + ",companyName=" + companyName + "]";
+    }
 }
